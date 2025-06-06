@@ -2,7 +2,6 @@ const calculator = document.querySelector(".calculator");
 const keys = calculator.querySelector(".calculator__keys");
 const display = document.querySelector(".calculator__display");
 
-
 const calculate = (n1, operator, n2) => {
   let result = "";
 
@@ -28,7 +27,7 @@ keys.addEventListener("click", (e) => {
     const previousKeyType = calculator.dataset.previousKeyType;
 
     if (!action) {
-      console.log("operator key!");
+      console.log("number key!");
       if (displayedNum === "0" || previousKeyType === "operator") {
         display.textContent = keyContent;
 
@@ -37,7 +36,8 @@ keys.addEventListener("click", (e) => {
         );
       } else {
         display.textContent = displayedNum + keyContent;
-      }
+    }
+    calculator.dataset.previousKeyType = 'number'
     }
 
     if (
@@ -56,25 +56,29 @@ keys.addEventListener("click", (e) => {
 
     if (action === "decimal") {
       console.log("decimal key!");
-      display.textContent = displayedNum + ".";
+      if (!displayedNum.includes(".")) {
+        display.textContent = displayedNum + ".";
+    } else if (previousKeyType === "operator") {
+        display.textContent = "0.";
     }
 
-    if (action === "clear") {
-      console.log("clear key!");
-    }
-
-    if (action === "calculate") {
-      console.log("equal key!");
-      const firstValue = calculator.dataset.firstValue;
-      const operator = calculator.dataset.operator;
-      const secondValue = displayedNum;
-
-      display.textContent = calculate(firstValue, operator, secondValue);
-    }
+    calculator.dataset.previousKeyType  = "decimal";
+}
 
     if (action === "clear") {
       console.log("clear key!");
       display.textContent = "0";
+      calculator.dataset.previousKeyType = "clear";
+    }
+
+    if (action === "calculate") {
+      console.log("equal key!");
+      let firstValue = calculator.dataset.firstValue || "0";
+      const operator = calculator.dataset.operator;
+      let secondValue = displayedNum || "0";
+
+      display.textContent = calculate(firstValue, operator, secondValue);
+      calculator.dataset.previousKeyType = "calculate";
     }
   }
 });
