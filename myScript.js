@@ -2,6 +2,7 @@ const calculator = document.querySelector(".calculator");
 const keys = calculator.querySelector(".calculator__keys");
 const display = document.querySelector(".calculator__display");
 
+
 const calculate = (n1, operator, n2) => {
   let result = "";
 
@@ -23,6 +24,8 @@ keys.addEventListener("click", (e) => {
     const key = e.target;
     const action = key.dataset.action;
     const displayedNum = display.textContent;
+    const keyContent = key.textContent;
+    const previousKeyType = calculator.dataset.previousKeyType;
 
     if (!action) {
       console.log("operator key!");
